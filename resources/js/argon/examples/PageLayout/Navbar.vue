@@ -9,7 +9,7 @@
         class="navbar-brand font-weight-bolder ms-lg-0 ms-3 position-relative"
         :class="darkMode ? 'text-black' : 'text-white'"
         to="/"
-        >AndreyTepaykin test app</router-link
+        >{{ appName }}</router-link
       >
       <button
         class="shadow-none navbar-toggler ms-2"
@@ -81,7 +81,8 @@ export default {
   data() {
     return {
       downArrWhite,
-      downArrBlack
+      downArrBlack,
+      appName: import.meta.env.VITE_APP_NAME,
     };
   },
   props: {

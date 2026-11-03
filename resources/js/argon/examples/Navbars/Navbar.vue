@@ -28,11 +28,6 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end shadow position-absolute mt-0"
               :class="showProfileDropdown ? 'show' : ''" aria-labelledby="dropdownProfileMenu">
-              <div class="border-radius-md" style="padding: 0.3rem 1rem;">
-                <small>
-                  Welcome
-                </small>
-              </div>
               <li>
                 <a class="dropdown-item border-radius-md" href="javascript:;">
                   <div>

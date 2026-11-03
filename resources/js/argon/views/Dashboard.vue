@@ -2,7 +2,7 @@
   <div class="py-4 container-fluid">
     <div class="row">
       <div class="col-lg-12">
-        <div class="row">
+        <div class="row mb-4">
           <div class="col-lg-3 col-md-6 col-12">
             <card
               :title="stats.money.title"

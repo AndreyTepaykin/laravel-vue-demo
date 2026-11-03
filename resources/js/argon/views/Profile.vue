@@ -317,7 +317,7 @@ export default {
   },
   beforeMount() {
     this.$store.state.imageLayout = "profile-overview";
-    this.$store.state.showNavbar = false;
+    this.$store.state.showNavbar = true;
     this.$store.state.showFooter = true;
     this.$store.state.hideConfigButton = true;
     body.classList.add("profile-overview");

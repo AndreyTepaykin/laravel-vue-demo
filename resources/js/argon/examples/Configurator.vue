@@ -120,7 +120,7 @@
         </div>
 
         <hr class="horizontal dark my-4" />
-        <div class="mt-2 mb-5 d-flex">
+        <div class="mt-2 mb-3 d-flex">
           <h6 class="mb-0" :class="this.$store.state.isRTL ? 'ms-2' : ''">
             Light / Dark
           </h6>
@@ -132,45 +132,6 @@
               @click="setDarkMode"
             />
           </div>
-        </div>
-        <a
-          class="btn bg-gradient-dark w-100"
-          href="https://www.creative-tim.com/product/vue-argon-dashboard-laravel"
-          target="_blank"
-          >Free Download</a
-        >
-        <a
-          class="btn btn-outline-dark w-100"
-          href="https://vue-argon-dashboard-laravel-docs.creative-tim.com/vue/overview/argon-dashboard/"
-          target="_blank"
-          >View documentation</a
-        >
-        <div class="text-center w-100">
-          <a
-            class="github-button"
-            href="https://github.com/creativetimofficial/vue-argon-dashboard-laravel"
-            target="_blank"
-            data-icon="octicon-star"
-            data-size="large"
-            data-show-count="true"
-            aria-label="Star creativetimofficial/vue-argon-dashboard-laravel on GitHub"
-            >Star</a
-          >
-          <h6 class="mt-3">Thank you for sharing!</h6>
-          <a
-            href="https://twitter.com/intent/tweet?text=Check%20Vue%20Argon%20Dashboard%20made%20by%20%40CreativeTim%20%26%20%40updivision%20%23dashboard%20%23bootstrap5%20%23laravel&url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fvue-argon-dashboard-laravel"
-            class="mb-0 btn btn-dark me-2"
-            target="_blank"
-          >
-            <i class="fab fa-twitter me-1" aria-hidden="true"></i> Tweet
-          </a>
-          <a
-            href="https://www.facebook.com/sharer/sharer.php?u=https://www.creative-tim.com/product/vue-argon-dashboard-laravel"
-            class="mb-0 btn btn-dark me-2"
-            target="_blank"
-          >
-            <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
-          </a>
         </div>
       </div>
     </div>

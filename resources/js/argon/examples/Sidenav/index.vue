@@ -38,7 +38,7 @@
           class="navbar-brand-img h-100"
           alt="main_logo"
         />
-        <span class="ms-2 font-weight-bold me-2">AndreyTepaykin test app</span>
+        <span class="ms-2 font-weight-bold me-2">{{ appName }}</span>
       </router-link>
     </div>
     <hr class="mt-0 horizontal dark" />
@@ -60,7 +60,8 @@ export default {
   data() {
     return {
       logo,
-      logoWhite
+      logoWhite,
+      appName: import.meta.env.VITE_APP_NAME,
     };
   },
   props: ["custom_class", "layout"],

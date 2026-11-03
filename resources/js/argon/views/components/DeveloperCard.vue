@@ -5,7 +5,7 @@
         <div class="col-lg-6 mb-lg-0 mb-4">
           <div class="d-flex flex-column h-100">
             <p class="mb-1 pt-2 text-bold">بناها المطورون</p>
-            <h5 class="font-weight-bolder">AndreyTepaykin test app</h5>
+            <h5 class="font-weight-bolder">{{ appName }}</h5>
             <p class="mb-5">
               من الألوان والبطاقات والطباعة إلى العناصر المعقدة ، ستجد الوثائق
               الكاملة.
@@ -41,6 +41,11 @@
 
 <script>
 export default {
-  name: "developer-card"
+  name: "developer-card",
+  data() {
+    return {
+      appName: import.meta.env.VITE_APP_NAME,
+    };
+  },
 };
 </script>

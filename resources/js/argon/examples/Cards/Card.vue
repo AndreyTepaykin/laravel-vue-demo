@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4 card">
+  <div class="card h-100">
     <div class="p-3 card-body">
       <div class="d-flex" :class="directionReverse ? reverseDirection : ''">
         <div>

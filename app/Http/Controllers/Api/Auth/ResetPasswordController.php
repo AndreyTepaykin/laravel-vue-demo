@@ -18,6 +18,12 @@ class ResetPasswordController extends Controller
      */
     public function __invoke(ResetPasswordRequest $request): JsonResponse
     {
+        abort_if(
+            User::isProtectedEmail($request->string('email')->toString()),
+            403,
+            "Sorry you can't manage data on demo app",
+        );
+
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (User $user, string $password): void {

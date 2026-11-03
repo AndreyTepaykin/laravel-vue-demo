@@ -177,9 +177,9 @@ export default {
     } catch (error) {
       this.showSwal({
         type: 'error',
-        message: error.response?.status === 403
+        message: error.response?.status === 403 && !error.response?.data?.message
           ? 'Only admins can manage users.'
-          : this.firstValidationMessage(error.response?.data?.errors) || 'Failed to load users.',
+          : this.apiErrorMessage(error, 'Failed to load users.'),
       });
       if (error.response?.status === 403) {
         this.$router.push({ name: 'Dashboard' });
@@ -248,7 +248,7 @@ export default {
         this.setApiValidation(error.response?.data?.errors);
         this.showSwal({
           type: 'error',
-          message: this.firstValidationMessage(error.response?.data?.errors),
+          message: this.apiErrorMessage(error),
         });
       } finally {
         this.saving = false;
@@ -267,7 +267,7 @@ export default {
       } catch (error) {
         this.showSwal({
           type: 'error',
-          message: this.firstValidationMessage(error.response?.data?.errors) || 'Delete failed.',
+          message: this.apiErrorMessage(error, 'Delete failed.'),
         });
       }
     },

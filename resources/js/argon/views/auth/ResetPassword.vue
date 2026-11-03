@@ -151,7 +151,7 @@ export default {
         this.setApiValidation(error.response?.data?.errors);
         this.showSwal({
           type:"error",
-          message: this.firstValidationMessage(error.response?.data?.errors)
+          message: this.apiErrorMessage(error),
         });
       }
     }

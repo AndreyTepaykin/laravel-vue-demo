@@ -24,6 +24,9 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request): JsonResponse
     {
         $user = $request->user();
+
+        $this->authorize('update', $user);
+
         $user->fill($request->safe()->only(['name', 'email']));
 
         if ($request->filled('password')) {

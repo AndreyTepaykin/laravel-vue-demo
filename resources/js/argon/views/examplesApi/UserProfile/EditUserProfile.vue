@@ -172,7 +172,7 @@ export default {
   },
   beforeMount() {
     this.$store.state.imageLayout = "profile-overview";
-    this.$store.state.showNavbar = false;
+    this.$store.state.showNavbar = true;
     this.$store.state.showSidenav = true;
     this.$store.state.showFooter = true;
     this.$store.state.hideConfigButton = true;
@@ -212,10 +212,10 @@ export default {
             await this.$store.dispatch("profile/me");
         }
       } catch (error) {
-        this.setApiValidation(error.response.data.errors);
+        this.setApiValidation(error.response?.data?.errors);
         this.showSwal({
           type: "error",
-          message: "Oops, something went wrong!"
+          message: this.apiErrorMessage(error),
         });
       }
     },

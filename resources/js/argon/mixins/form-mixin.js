@@ -56,6 +56,32 @@ export default {
       return serverErrors[0]?.detail || 'Oops, something went wrong!';
     },
 
+    /**
+     * Prefer field validation errors, then Laravel's top-level message
+     * (e.g. AuthorizationException / demo restrictions).
+     */
+    apiErrorMessage(error, fallback = 'Oops, something went wrong!') {
+      const data = error?.response?.data;
+
+      if (!data) {
+        return fallback;
+      }
+
+      if (data.errors) {
+        const fromErrors = this.firstValidationMessage(data.errors);
+
+        if (fromErrors && fromErrors !== 'Oops, something went wrong!') {
+          return fromErrors;
+        }
+      }
+
+      if (typeof data.message === 'string' && data.message.trim() !== '') {
+        return data.message;
+      }
+
+      return fallback;
+    },
+
     resetApiValidation() {
       this.apiValidationErrors = {};
     },

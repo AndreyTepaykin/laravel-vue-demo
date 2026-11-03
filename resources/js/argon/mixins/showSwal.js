@@ -1,13 +1,20 @@
 import Swal from "sweetalert2";
 
+function isMobileViewport() {
+    return typeof window !== "undefined"
+        && window.matchMedia("(max-width: 576px)").matches;
+}
+
 export default {
     methods:{
         showSwal(options) {
+            const mobile = isMobileViewport();
+
             new Swal({
                 toast: true,
-                position: "top-right",
+                position: options.position || (mobile ? "top" : "top-right"),
                 iconColor: "white",
-                width: options.width ? options.width : 300,
+                width: options.width ? options.width : (mobile ? "92%" : 300),
                 text: options.message,
                 customClass: {
                     popup: options.type === "success" ? "colored-toast-success" : "colored-toast-error",

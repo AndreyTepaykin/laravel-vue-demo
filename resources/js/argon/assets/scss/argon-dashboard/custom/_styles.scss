@@ -16,7 +16,31 @@
   font-size: 12px !important;
 }
 
+// Keep SweetAlert toasts fully visible under the mobile top bar / browser chrome
+@media (max-width: 576px) {
+  body.swal2-toast-shown .swal2-container.swal2-top,
+  body.swal2-toast-shown .swal2-container.swal2-top-end,
+  body.swal2-toast-shown .swal2-container.swal2-top-right {
+    top: max(4.5rem, env(safe-area-inset-top, 0px) + 3.5rem);
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 0.75rem;
+    box-sizing: border-box;
+    transform: none;
+  }
+
+  body.swal2-toast-shown .swal2-container.swal2-top {
+    left: 0;
+  }
+
+  .swal2-popup.swal2-toast {
+    margin: 0 auto;
+  }
+}
+
 .argon-error {
-  position: relative;
-  color: $danger;
+    position: relative;
+    color: $danger;
 }

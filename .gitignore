@@ -1,0 +1,60 @@
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+.phpactor.json
+.phpunit.result.cache
+/.codex
+/.cursor/
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+Homestead.json
+Homestead.yaml
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# Tests / coverage
+/coverage
+phpunit.xml.bak
+
+# Logs & caches
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.cache
+
+# OS / editors
+*.swp
+*.swo
+*~
+
+# Local workspace / notes
+*.code-workspace
+info.txt
+
+# Temporary uploads / dumps
+*.sql
+*.sqlite
+*.sqlite-journal
+/database/*.sqlite
+
+# Project-specific
+/vue-argon-dashboard-laravel-master/
+/.mcp.json

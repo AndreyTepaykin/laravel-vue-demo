@@ -189,6 +189,10 @@ export default {
     align-items: end;
   }
 
+  .page-header > .container {
+    margin-top: 280px;
+  }
+
   .card {
     border-radius: 0;
     background-color: rgba(255, 255, 255, 0.6);

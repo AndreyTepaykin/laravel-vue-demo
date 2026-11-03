@@ -20,6 +20,7 @@ async function login(user) {
 
 async function logout() {
   try {
+    await ensureCsrf();
     await axios.post('/logout');
   } finally {
     localStorage.removeItem('is_authenticated');

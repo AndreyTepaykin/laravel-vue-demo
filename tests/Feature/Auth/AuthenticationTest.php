@@ -95,6 +95,15 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
+    public function test_guests_can_call_logout_idempotently(): void
+    {
+        $this->postJson('/logout')
+            ->assertOk()
+            ->assertJsonPath('message', 'Logged out.');
+
+        $this->assertGuest();
+    }
+
     public function test_guests_cannot_fetch_their_profile(): void
     {
         $this->getJson('/api/user')->assertUnauthorized();

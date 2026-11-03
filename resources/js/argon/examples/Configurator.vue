@@ -2,6 +2,7 @@
   <div class="fixed-plugin">
     <a
       class="px-3 py-2 fixed-plugin-button text-dark position-fixed"
+      :class="{ 'd-none': hideConfigButton }"
       @click="toggleConfigurator"
     >
       <i class="py-2 fa fa-cog"></i>
@@ -139,10 +140,16 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import { activateDarkMode, deactivateDarkMode } from "@/assets/js/dark-mode";
 export default {
   name: "configurator",
+  computed: {
+    ...mapState(["hideConfigButton"]),
+    sidenavResponsive() {
+      return this.sidenavTypeOnResize;
+    },
+  },
   methods: {
     ...mapMutations([
       "navbarMinimize",
@@ -184,11 +191,6 @@ export default {
       } else {
         white.classList.remove("disabled");
       }
-    },
-  },
-  computed: {
-    sidenavResponsive() {
-      return this.sidenavTypeOnResize;
     },
   },
   beforeMount() {

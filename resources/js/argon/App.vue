@@ -39,7 +39,7 @@ Coded by www.creative-tim.com
         <router-view />
         <app-footer v-show="showFooter" />
         <configurator
-          :class="[showConfig ? 'show' : '', hideConfigButton ? 'd-none' : '']"
+          :class="[showConfig ? 'show' : '']"
         />
       </main>
     </template>
@@ -47,7 +47,7 @@ Coded by www.creative-tim.com
     <template v-else>
       <router-view />
       <configurator
-        :class="[showConfig ? 'show' : '', hideConfigButton ? 'd-none' : '']"
+        :class="[showConfig ? 'show' : '']"
       />
     </template>
   </div>
@@ -74,7 +74,6 @@ export default {
       "showNavbar",
       "showFooter",
       "showConfig",
-      "hideConfigButton",
       "layout",
       "mcolor",
       "isTransparent",

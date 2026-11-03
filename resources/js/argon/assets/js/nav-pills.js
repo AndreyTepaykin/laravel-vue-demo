@@ -1,150 +1,204 @@
 /* eslint-disable */
 
-export default function setNavPills() {
-  var total = document.querySelectorAll('.nav-pills');
+let resizeListenerBound = false;
 
-  function initNavs() {
-    total.forEach(function (item, i) {
-      var moving_div = document.createElement('div');
-      var first_li = item.querySelector('li:first-child .nav-link');
-      var tab = first_li.cloneNode();
-      tab.innerHTML = "-";
+function getNavPills() {
+  return Array.from(document.querySelectorAll(".nav-pills")).filter(
+    (item) => item.isConnected
+  );
+}
 
-      moving_div.classList.add('moving-tab', 'position-absolute', 'nav-link');
-      moving_div.appendChild(tab);
-      item.appendChild(moving_div);
+function getEventTarget(e) {
+  e = e || window.event;
+  return e.target || e.srcElement;
+}
 
-      var list_length = item.getElementsByTagName("li").length;
+function createMovingTab(item, sourceLink) {
+  if (!sourceLink) {
+    return null;
+  }
 
-      moving_div.style.padding = '0px';
-      moving_div.style.width = item.querySelector('li:nth-child(1)').offsetWidth + 'px';
-      moving_div.style.transform = 'translate3d(0px, 0px, 0px)';
-      moving_div.style.transition = '.5s ease';
+  const existing = item.querySelector(".moving-tab");
+  if (existing) {
+    existing.remove();
+  }
 
-      item.onmouseover = function (event) {
-        let target = getEventTarget(event);
-        let li = target.closest('li'); // get reference
-        if (li) {
-          let nodes = Array.from(li.closest('ul').children); // get array
-          let index = nodes.indexOf(li) + 1;
-          item.querySelector('li:nth-child(' + index + ') .nav-link').onclick = function () {
-            moving_div = item.querySelector('.moving-tab');
-            let sum = 0;
-            if (item.classList.contains('flex-column')) {
-              for (var j = 1; j <= nodes.indexOf(li); j++) {
-                sum += item.querySelector('li:nth-child(' + j + ')').offsetHeight;
-              }
-              moving_div.style.transform = 'translate3d(0px,' + sum + 'px, 0px)';
-              moving_div.style.height = item.querySelector('li:nth-child(' + j + ')').offsetHeight;
-            } else {
-              for (var j = 1; j <= nodes.indexOf(li); j++) {
-                sum += item.querySelector('li:nth-child(' + j + ')').offsetWidth;
-              }
-              moving_div.style.transform = 'translate3d(' + sum + 'px, 0px, 0px)';
-              moving_div.style.width = item.querySelector('li:nth-child(' + index + ')').offsetWidth + 'px';
+  const moving_div = document.createElement("div");
+  const tab = sourceLink.cloneNode();
+  tab.innerHTML = "-";
+
+  moving_div.classList.add("moving-tab", "position-absolute", "nav-link");
+  moving_div.appendChild(tab);
+  item.appendChild(moving_div);
+
+  moving_div.style.padding = "0px";
+  moving_div.style.transition = ".5s ease";
+
+  return moving_div;
+}
+
+function positionMovingTab(item, moving_div) {
+  if (!moving_div || !item.isConnected) {
+    return;
+  }
+
+  const activeLink = item.querySelector(".nav-link.active");
+  const li = activeLink ? activeLink.parentElement : item.querySelector("li");
+
+  if (!li) {
+    return;
+  }
+
+  const list = li.closest("ul");
+  if (!list) {
+    return;
+  }
+
+  const nodes = Array.from(list.children);
+  const index = nodes.indexOf(li) + 1;
+  let sum = 0;
+
+  if (item.classList.contains("flex-column")) {
+    for (let j = 1; j <= nodes.indexOf(li); j++) {
+      const sibling = item.querySelector("li:nth-child(" + j + ")");
+      if (sibling) {
+        sum += sibling.offsetHeight;
+      }
+    }
+    const current = item.querySelector("li:nth-child(" + index + ")");
+    moving_div.style.transform = "translate3d(0px," + sum + "px, 0px)";
+    moving_div.style.width = (current ? current.offsetWidth : 0) + "px";
+    moving_div.style.height = current ? current.offsetHeight + "px" : "0px";
+  } else {
+    for (let j = 1; j <= nodes.indexOf(li); j++) {
+      const sibling = item.querySelector("li:nth-child(" + j + ")");
+      if (sibling) {
+        sum += sibling.offsetWidth;
+      }
+    }
+    const current = item.querySelector("li:nth-child(" + index + ")");
+    moving_div.style.transform = "translate3d(" + sum + "px, 0px, 0px)";
+    moving_div.style.width = (current ? current.offsetWidth : 0) + "px";
+  }
+}
+
+function initNavs() {
+  getNavPills().forEach(function (item) {
+    const first_li = item.querySelector("li:first-child .nav-link");
+    if (!first_li) {
+      return;
+    }
+
+    const moving_div = createMovingTab(item, first_li);
+    if (!moving_div) {
+      return;
+    }
+
+    const firstItem = item.querySelector("li:nth-child(1)");
+    moving_div.style.width = (firstItem ? firstItem.offsetWidth : 0) + "px";
+    moving_div.style.transform = "translate3d(0px, 0px, 0px)";
+
+    item.onmouseover = function (event) {
+      const target = getEventTarget(event);
+      const li = target.closest("li");
+      if (!li) {
+        return;
+      }
+
+      const list = li.closest("ul");
+      if (!list) {
+        return;
+      }
+
+      const nodes = Array.from(list.children);
+      const index = nodes.indexOf(li) + 1;
+      const navLink = item.querySelector(
+        "li:nth-child(" + index + ") .nav-link"
+      );
+
+      if (!navLink) {
+        return;
+      }
+
+      navLink.onclick = function () {
+        const tab = item.querySelector(".moving-tab");
+        if (!tab) {
+          return;
+        }
+
+        let sum = 0;
+        if (item.classList.contains("flex-column")) {
+          for (let j = 1; j <= nodes.indexOf(li); j++) {
+            const sibling = item.querySelector("li:nth-child(" + j + ")");
+            if (sibling) {
+              sum += sibling.offsetHeight;
             }
           }
+          const current = item.querySelector("li:nth-child(" + index + ")");
+          tab.style.transform = "translate3d(0px," + sum + "px, 0px)";
+          tab.style.height = current ? current.offsetHeight + "px" : "0px";
+        } else {
+          for (let j = 1; j <= nodes.indexOf(li); j++) {
+            const sibling = item.querySelector("li:nth-child(" + j + ")");
+            if (sibling) {
+              sum += sibling.offsetWidth;
+            }
+          }
+          const current = item.querySelector("li:nth-child(" + index + ")");
+          tab.style.transform = "translate3d(" + sum + "px, 0px, 0px)";
+          tab.style.width = (current ? current.offsetWidth : 0) + "px";
         }
+      };
+    };
+  });
+}
+
+function onResize() {
+  getNavPills().forEach(function (item) {
+    const activeLink =
+      item.querySelector(".nav-link.active") ||
+      item.querySelector("li:first-child .nav-link");
+    const moving_div = createMovingTab(item, activeLink);
+    positionMovingTab(item, moving_div);
+  });
+
+  if (window.innerWidth < 991) {
+    getNavPills().forEach(function (item) {
+      if (!item.classList.contains("flex-column")) {
+        item.classList.remove("flex-row");
+        item.classList.add("flex-column", "on-resize");
+        const moving_div = item.querySelector(".moving-tab");
+        positionMovingTab(item, moving_div);
+      }
+    });
+  } else {
+    getNavPills().forEach(function (item) {
+      if (item.classList.contains("on-resize")) {
+        item.classList.remove("flex-column", "on-resize");
+        item.classList.add("flex-row");
+        const moving_div = item.querySelector(".moving-tab");
+        positionMovingTab(item, moving_div);
       }
     });
   }
+}
 
+export default function setNavPills() {
   setTimeout(function () {
     initNavs();
   }, 100);
 
-  // Tabs navigation resize
-
-  window.addEventListener('resize', function (event) {
-    total.forEach(function (item, i) {
-      item.querySelector('.moving-tab').remove();
-      var moving_div = document.createElement('div');
-      var tab = item.querySelector(".nav-link.active").cloneNode();
-      tab.innerHTML = "-";
-
-      moving_div.classList.add('moving-tab', 'position-absolute', 'nav-link');
-      moving_div.appendChild(tab);
-
-      item.appendChild(moving_div);
-
-      moving_div.style.padding = '0px';
-      moving_div.style.transition = '.5s ease';
-
-      let li = item.querySelector(".nav-link.active").parentElement;
-
-      if (li) {
-        let nodes = Array.from(li.closest('ul').children); // get array
-        let index = nodes.indexOf(li) + 1;
-
-        let sum = 0;
-        if (item.classList.contains('flex-column')) {
-          for (var j = 1; j <= nodes.indexOf(li); j++) {
-            sum += item.querySelector('li:nth-child(' + j + ')').offsetHeight;
-          }
-          moving_div.style.transform = 'translate3d(0px,' + sum + 'px, 0px)';
-          moving_div.style.width = item.querySelector('li:nth-child(' + index + ')').offsetWidth + 'px';
-          moving_div.style.height = item.querySelector('li:nth-child(' + j + ')').offsetHeight;
-        } else {
-          for (var j = 1; j <= nodes.indexOf(li); j++) {
-            sum += item.querySelector('li:nth-child(' + j + ')').offsetWidth;
-          }
-          moving_div.style.transform = 'translate3d(' + sum + 'px, 0px, 0px)';
-          moving_div.style.width = item.querySelector('li:nth-child(' + index + ')').offsetWidth + 'px';
-
-        }
-      }
-    });
-
-    if (window.innerWidth < 991) {
-      total.forEach(function (item, i) {
-        if (!item.classList.contains('flex-column')) {
-          item.classList.remove('flex-row');
-          item.classList.add('flex-column', 'on-resize');
-          let li = item.querySelector(".nav-link.active").parentElement;
-          let nodes = Array.from(li.closest('ul').children); // get array
-          let index = nodes.indexOf(li) + 1;
-          let sum = 0;
-          for (var j = 1; j <= nodes.indexOf(li); j++) {
-            sum += item.querySelector('li:nth-child(' + j + ')').offsetHeight;
-          }
-          var moving_div = document.querySelector('.moving-tab');
-          moving_div.style.width = item.querySelector('li:nth-child(1)').offsetWidth + 'px';
-          moving_div.style.transform = 'translate3d(0px,' + sum + 'px, 0px)';
-
-        }
-      });
-    } else {
-      total.forEach(function (item, i) {
-        if (item.classList.contains('on-resize')) {
-          item.classList.remove('flex-column', 'on-resize');
-          item.classList.add('flex-row');
-          let li = item.querySelector(".nav-link.active").parentElement;
-          let nodes = Array.from(li.closest('ul').children); // get array
-          let index = nodes.indexOf(li) + 1;
-          let sum = 0;
-          for (var j = 1; j <= nodes.indexOf(li); j++) {
-            sum += item.querySelector('li:nth-child(' + j + ')').offsetWidth;
-          }
-          var moving_div = document.querySelector('.moving-tab');
-          moving_div.style.transform = 'translate3d(' + sum + 'px, 0px, 0px)';
-          moving_div.style.width = item.querySelector('li:nth-child(' + index + ')').offsetWidth + 'px';
-        }
-      })
-    }
-  });
-
-  // Function to remove flex row on mobile devices
-  if (window.innerWidth < 991) {
-    total.forEach(function (item, i) {
-      if (item.classList.contains('flex-row')) {
-        item.classList.remove('flex-row');
-        item.classList.add('flex-column', 'on-resize');
-      }
-    });
+  if (!resizeListenerBound) {
+    window.addEventListener("resize", onResize);
+    resizeListenerBound = true;
   }
 
-  function getEventTarget(e) {
-    e = e || window.event;
-    return e.target || e.srcElement;
+  if (window.innerWidth < 991) {
+    getNavPills().forEach(function (item) {
+      if (item.classList.contains("flex-row")) {
+        item.classList.remove("flex-row");
+        item.classList.add("flex-column", "on-resize");
+      }
+    });
   }
 }

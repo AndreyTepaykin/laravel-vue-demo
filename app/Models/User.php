@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -44,6 +45,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Register model event hooks.
+     */
+    protected static function booted(): void
+    {
+        static::created(function (): void {
+            static::pruneToMaxUsers();
+        });
+    }
+
+    /**
      * Determine whether the given email belongs to a protected demo account.
      */
     public static function isProtectedEmail(string $email): bool
@@ -57,5 +68,37 @@ class User extends Authenticatable
     public function isProtected(): bool
     {
         return self::isProtectedEmail($this->email);
+    }
+
+    /**
+     * Delete the oldest non-protected users until the configured max is met.
+     */
+    public static function pruneToMaxUsers(): void
+    {
+        $max = (int) config('users.max');
+
+        if ($max < 1) {
+            return;
+        }
+
+        DB::transaction(function () use ($max): void {
+            $excess = static::query()->lockForUpdate()->count() - $max;
+
+            if ($excess <= 0) {
+                return;
+            }
+
+            $victims = static::query()
+                ->whereNotIn('email', self::PROTECTED_EMAILS)
+                ->oldest()
+                ->orderBy('id')
+                ->limit($excess)
+                ->lockForUpdate()
+                ->get();
+
+            foreach ($victims as $victim) {
+                $victim->delete();
+            }
+        });
     }
 }

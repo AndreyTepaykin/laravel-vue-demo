@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
 use Tests\TestCase;
 
@@ -99,6 +100,23 @@ class ProtectedUserRestrictionTest extends TestCase
             ->assertJsonPath('message', "Sorry you can't manage data on demo app");
 
         $this->assertTrue(Hash::check('secret', $protected->fresh()->password));
+    }
+
+    public function test_protected_user_does_not_receive_password_reset_link(): void
+    {
+        Notification::fake();
+
+        $protected = User::factory()->create([
+            'email' => 'admin@jsonapi.com',
+        ]);
+
+        $this->postJson('/forgot-password', [
+            'email' => $protected->email,
+        ])
+            ->assertOk()
+            ->assertJsonPath('message', __(Password::RESET_LINK_SENT));
+
+        Notification::assertNothingSent();
     }
 
     public function test_non_protected_user_can_be_updated_and_deleted(): void

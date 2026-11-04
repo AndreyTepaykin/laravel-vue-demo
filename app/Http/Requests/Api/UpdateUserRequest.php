@@ -19,12 +19,18 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [
+                'required',
+                'string',
+                'min:'.config('fields.min.name'),
+                'max:'.config('fields.max.name'),
+            ],
             'email' => [
                 'required',
                 'string',
                 'email',
-                'max:255',
+                'min:'.config('fields.min.email'),
+                'max:'.config('fields.max.email'),
                 Rule::unique('users', 'email')->ignore($this->user()->id),
             ],
             'password' => ['nullable', 'confirmed', Password::defaults()],

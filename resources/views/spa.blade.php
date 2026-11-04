@@ -11,6 +11,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
     @vite(['resources/js/app.js'])
+
+    @php($appConfig = [
+        'fields' => config('fields'),
+        'users' => [
+            'max' => config('users.max'),
+        ],
+    ])
+    <script>
+        window.AppConfig = @json($appConfig);
+    </script>
 </head>
 <body class="bg-gray-100">
     <div id="app"></div>

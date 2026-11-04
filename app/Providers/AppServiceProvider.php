@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Password::defaults(function () {
+            return Password::min(config('fields.min.password'))
+                ->max(config('fields.max.password'));
+        });
+
         ResetPassword::createUrlUsing(function (User $user, string $token): string {
             return url('/password/reset?'.http_build_query([
                 'token' => $token,

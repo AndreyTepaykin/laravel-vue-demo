@@ -13,5 +13,7 @@ app.use(store);
 app.use(router);
 app.use(ArgonDashboard);
 app.config.globalProperties.$isDemo = Number(import.meta.env.VITE_IS_DEMO ?? 0);
+app.config.globalProperties.$fieldMin = window.AppConfig?.fields?.min ?? {};
+app.config.globalProperties.$fieldMax = window.AppConfig?.fields?.max ?? {};
 
 app.mount('#app');

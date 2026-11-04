@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -18,20 +19,32 @@ class UpdateManagedUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = $this->route('user');
 
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [
+                'required',
+                'string',
+                'min:'.config('fields.min.name'),
+                'max:'.config('fields.max.name'),
+            ],
             'email' => [
                 'required',
                 'string',
                 'email',
-                'max:255',
+                'min:'.config('fields.min.email'),
+                'max:'.config('fields.max.email'),
                 Rule::unique('users', 'email')->ignore($user->id),
             ],
             'password' => ['nullable', 'confirmed', Password::defaults()],
-            'role' => ['sometimes', 'string', Rule::in(['admin', 'user'])],
+            'role' => [
+                'sometimes',
+                'string',
+                'min:'.config('fields.min.role'),
+                'max:'.config('fields.max.role'),
+                Rule::in(['admin', 'user']),
+            ],
         ];
     }
 }

@@ -54,6 +54,8 @@
                       v-model="userToUpdate.name"
                       class="mb-0"
                       placeholder="Name"
+                      :minlength="$fieldMin.name"
+                      :maxlength="$fieldMax.name"
                       :value="userToUpdate.name"
                     />
                     <validation-error :errors="apiValidationErrors.name" />
@@ -67,6 +69,8 @@
                       v-model="userToUpdate.email"
                       class="mb-0"
                       placeholder="Email"
+                      :minlength="$fieldMin.email"
+                      :maxlength="$fieldMax.email"
                       :value="userToUpdate.email"
                     />
                     <validation-error :errors="apiValidationErrors.email" />
@@ -93,6 +97,8 @@
                       type="password"
                       v-model="userToUpdate.password"
                       placeholder="New password"
+                      :minlength="$fieldMin.password"
+                      :maxlength="$fieldMax.password"
                       :value="userToUpdate.password"
                     />
                   </div>
@@ -108,6 +114,8 @@
                       type="password"
                       v-model="userToUpdate.password_confirmation"
                       placeholder="Confirm new password"
+                      :minlength="$fieldMin.password"
+                      :maxlength="$fieldMax.password"
                       :value="userToUpdate.password_confirmation"
                     />
                   </div>

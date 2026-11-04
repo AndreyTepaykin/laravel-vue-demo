@@ -12,6 +12,8 @@
         :id="id"
         :value="currentValue"
         :placeholder="placeholder"
+        :minlength="minlength"
+        :maxlength="maxlength"
         :required="isRequired"
         @input="$emit('update:modelValue', $event.target.value)"
       />
@@ -48,6 +50,14 @@ export default {
     },
     placeholder: String,
     type: String,
+    minlength: {
+      type: [Number, String],
+      default: undefined,
+    },
+    maxlength: {
+      type: [Number, String],
+      default: undefined,
+    },
     isRequired: Boolean,
   },
   emits: ['update:modelValue'],

@@ -87,12 +87,24 @@
           <div class="modal-body">
             <div class="mb-3">
               <label class="form-label">Name</label>
-              <argon-input v-model="form.name" type="text" :value="form.name" />
+              <argon-input
+                v-model="form.name"
+                type="text"
+                :minlength="$fieldMin.name"
+                :maxlength="$fieldMax.name"
+                :value="form.name"
+              />
               <validation-error :errors="apiValidationErrors.name" />
             </div>
             <div class="mb-3">
               <label class="form-label">Email</label>
-              <argon-input v-model="form.email" type="email" :value="form.email" />
+              <argon-input
+                v-model="form.email"
+                type="email"
+                :minlength="$fieldMin.email"
+                :maxlength="$fieldMax.email"
+                :value="form.email"
+              />
               <validation-error :errors="apiValidationErrors.email" />
             </div>
             <div class="mb-3">
@@ -108,7 +120,13 @@
                 Password
                 <span v-if="editingUser" class="text-xs text-secondary">(leave blank to keep)</span>
               </label>
-              <argon-input v-model="form.password" type="password" :value="form.password" />
+              <argon-input
+                v-model="form.password"
+                type="password"
+                :minlength="$fieldMin.password"
+                :maxlength="$fieldMax.password"
+                :value="form.password"
+              />
               <validation-error :errors="apiValidationErrors.password" />
             </div>
             <div class="mb-3">
@@ -116,6 +134,8 @@
               <argon-input
                 v-model="form.password_confirmation"
                 type="password"
+                :minlength="$fieldMin.password"
+                :maxlength="$fieldMax.password"
                 :value="form.password_confirmation"
               />
             </div>

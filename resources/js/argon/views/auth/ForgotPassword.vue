@@ -4,7 +4,7 @@
         <div class="page-header min-vh-100">
           <div class="container">
             <div class="row">
-              <div class="mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0">
+              <div class="auth-form-col mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 position-relative">
                 <div class="card card-plain">
                   <div class="pb-0 card-header text-start">
                     <h4 class="font-weight-bolder">Forgot Password</h4>
@@ -19,6 +19,8 @@
                             placeholder="Email"
                             name="email"
                             size="lg"
+                            :minlength="$fieldMin.email"
+                            :maxlength="$fieldMax.email"
                             :value="email" />
                             <validation-error :errors="apiValidationErrors.email" />
                       </div>
@@ -44,6 +46,7 @@
                     </p>
                   </div>
                 </div>
+                <app-footer />
               </div>
               <div
                 class="top-0 my-auto text-center col-6 d-lg-flex d-none h-100 pe-0 position-absolute end-0 justify-content-center flex-column"
@@ -70,6 +73,7 @@
   </template>
   
 <script>
+import AppFooter from "@/examples/PageLayout/Footer.vue";
 import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 import formMixin from "../../mixins/form-mixin.js"
@@ -80,6 +84,7 @@ const body = document.getElementsByTagName("body")[0];
 export default {
   name: "ForgotPassword",
   components: {
+    AppFooter,
     ArgonInput,
     ArgonButton,
     ValidationError
@@ -139,4 +144,11 @@ export default {
   }
 };
 </script>
-  
+
+<style scoped>
+@media (max-width: 991.98px) {
+  .card {
+    padding-bottom: 2.5rem;
+  }
+}
+</style>

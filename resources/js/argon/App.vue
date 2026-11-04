@@ -28,7 +28,7 @@ Coded by www.creative-tim.com
         :class="[isTransparent, isRTL ? 'fixed-end' : 'fixed-start']"
       />
       <main
-        class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+        class="main-content position-relative border-radius-lg d-flex flex-column min-vh-100"
       >
         <navbar
           :class="[navClasses]"
@@ -36,7 +36,9 @@ Coded by www.creative-tim.com
           :minNav="navbarMinimize"
           v-if="showNavbar"
         />
-        <router-view />
+        <div class="flex-grow-1">
+          <router-view />
+        </div>
         <app-footer v-show="showFooter" />
         <configurator
           :class="[showConfig ? 'show' : '']"

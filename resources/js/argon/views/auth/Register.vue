@@ -25,7 +25,7 @@
           </div>
           <div class="container px-0">
             <div class="row">
-              <div class="mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0">
+              <div class="auth-form-col mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 position-relative">
                 <div class="card shadow-lg mt-n6 mt-lg-0 position-relative z-index-2">
                   <div class="pb-0 card-header text-start">
                     <h4 class="font-weight-bolder">Sign Up</h4>
@@ -105,6 +105,8 @@
                           placeholder="Name"
                           name="name"
                           size="lg"
+                          :minlength="$fieldMin.name"
+                          :maxlength="$fieldMax.name"
                           :value="user.name" />
                       </div>
                       <div class="mb-3">
@@ -115,6 +117,8 @@
                           placeholder="Email"
                           name="email"
                           size="lg"
+                          :minlength="$fieldMin.email"
+                          :maxlength="$fieldMax.email"
                           :value="user.email" />
                         <validation-error id="registerValidation" :errors="apiValidationErrors.email" />
                       </div>
@@ -125,6 +129,8 @@
                           placeholder="Password"
                           name="password"
                           size="lg"
+                          :minlength="$fieldMin.password"
+                          :maxlength="$fieldMax.password"
                           :value="user.password" />
                         <validation-error id="registerValidation" :errors="apiValidationErrors.password" />
                       </div>
@@ -135,6 +141,8 @@
                           placeholder="Confirm password"
                           name="confirm_password"
                           size="lg"
+                          :minlength="$fieldMin.password"
+                          :maxlength="$fieldMax.password"
                           :value="user.confirm_password" />
                       </div>
                       <argon-checkbox id="flexCheckDefault" v-model="terms_conditions">
@@ -168,6 +176,7 @@
                     </p>
                   </div>
                 </div>
+                <app-footer />
               </div>
               <div
                 class="top-0 my-auto text-center col-6 d-lg-flex d-none h-100 pe-0 position-absolute end-0 justify-content-center flex-column"
@@ -193,7 +202,6 @@
         </div>
       </section>
     </main>
-    <app-footer />
   </template>
   
 <script>
@@ -319,6 +327,7 @@ export default {
   .card {
     border-radius: 0;
     background-color: rgba(255, 255, 255, 0.6);
+    padding-bottom: 2.5rem;
   }
 
   .card-header {

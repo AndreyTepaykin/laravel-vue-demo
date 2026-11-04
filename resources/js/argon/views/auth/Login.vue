@@ -25,7 +25,7 @@
           </div>
           <div class="container px-0">
             <div class="row">
-              <div class="mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0">
+              <div class="auth-form-col mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 position-relative">
                 <div class="card shadow-lg mt-n6 mt-lg-0 position-relative z-index-2">
                   <div class="pb-0 card-header text-start">
                     <h4 class="font-weight-bolder">Sign In</h4>
@@ -40,6 +40,8 @@
                             placeholder="Email"
                             name="email"
                             size="lg"
+                            :minlength="$fieldMin.email"
+                            :maxlength="$fieldMax.email"
                             :value="user.email" />
                             <validation-error :errors="apiValidationErrors.email" />
                       </div>
@@ -50,6 +52,7 @@
                             placeholder="Password"
                             name="password"
                             size="lg"
+                            :maxlength="$fieldMax.password"
                             :value="user.password" />
                       </div>
                       <argon-switch id="rememberMe">Remember me</argon-switch>
@@ -81,6 +84,7 @@
                     </p>
                   </div>
                 </div>
+                <app-footer />
               </div>
               <div
                 class="top-0 my-auto text-center col-6 d-lg-flex d-none h-100 pe-0 position-absolute end-0 justify-content-center flex-column"
@@ -110,6 +114,7 @@
   
 <script>
 import Navbar from "@/examples/PageLayout/Navbar.vue";
+import AppFooter from "@/examples/PageLayout/Footer.vue";
 import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
@@ -122,6 +127,7 @@ export default {
   name: "Login",
   components: {
     Navbar,
+    AppFooter,
     ArgonInput,
     ArgonSwitch,
     ArgonButton,
@@ -196,6 +202,7 @@ export default {
   .card {
     border-radius: 0;
     background-color: rgba(255, 255, 255, 0.6);
+    padding-bottom: 2.5rem;
   }
 
   .card-header {

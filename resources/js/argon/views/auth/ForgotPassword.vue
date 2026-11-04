@@ -1,11 +1,32 @@
 <template>
-    <main class="mt-0 main-content">
+    <div class="container top-0 position-sticky z-index-sticky">
+      <div class="row">
+        <div class="col-12">
+          <navbar
+            isBlur="login-nav border-radius-lg my-3 py-2 start-0 end-0 mx-4 shadow"
+            v-bind:darkMode="true"
+            isBtn="bg-gradient-success"
+          />
+        </div>
+      </div>
+    </div>
+    <main class="mt-0 main-content login-page">
       <section>
         <div class="page-header min-vh-100">
-          <div class="container">
+          <div
+            class="login-illustration min-vh-100 d-lg-none overflow-hidden"
+            :style="{
+              backgroundImage: `url('${signinIllustration}')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }"
+          >
+            <span class="mask bg-gradient-success opacity-6"></span>
+          </div>
+          <div class="container px-0">
             <div class="row">
               <div class="auth-form-col mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 position-relative">
-                <div class="card card-plain">
+                <div class="card shadow-lg mt-n6 mt-lg-0 position-relative z-index-2">
                   <div class="pb-0 card-header text-start">
                     <h4 class="font-weight-bolder">Forgot Password</h4>
                     <p class="mb-0">You will receive an e-mail in maximum 60 seconds</p>
@@ -16,6 +37,7 @@
                         <argon-input
                             v-model="email"
                             type="email"
+                            class="mb-0"
                             placeholder="Email"
                             name="email"
                             size="lg"
@@ -29,7 +51,7 @@
                         <argon-button
                           class="mt-4"
                           variant="gradient"
-                          color="dark"
+                          color="success"
                           fullWidth
                           size="lg"
                         ><div v-if="!loading">Send</div> <i v-else class="fas fa-spinner fa-pulse"></i>
@@ -53,8 +75,10 @@
               >
                 <div
                   class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
-                  style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg');
-            background-size: cover;"
+                  :style="{
+                    backgroundImage: `url('${signinIllustration}')`,
+                    backgroundSize: 'cover',
+                  }"
                 >
                   <span class="mask bg-gradient-success opacity-6"></span>
                   <h4
@@ -73,6 +97,7 @@
   </template>
   
 <script>
+import Navbar from "@/examples/PageLayout/Navbar.vue";
 import AppFooter from "@/examples/PageLayout/Footer.vue";
 import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
@@ -84,6 +109,7 @@ const body = document.getElementsByTagName("body")[0];
 export default {
   name: "ForgotPassword",
   components: {
+    Navbar,
     AppFooter,
     ArgonInput,
     ArgonButton,
@@ -92,6 +118,8 @@ export default {
   mixins: [formMixin, showSwal],
   data() {
     return {
+        signinIllustration:
+          "https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg",
         email: '',
         loading: false
     }
@@ -146,9 +174,34 @@ export default {
 </script>
 
 <style scoped>
+:deep(.login-nav) {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
 @media (max-width: 991.98px) {
+  .login-illustration {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .page-header {
+    align-items: end;
+  }
+
+  .page-header > .container {
+    margin-top: 280px;
+  }
+
   .card {
+    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.6);
     padding-bottom: 2.5rem;
+  }
+
+  .card-header {
+    background-color: transparent;
   }
 }
 </style>

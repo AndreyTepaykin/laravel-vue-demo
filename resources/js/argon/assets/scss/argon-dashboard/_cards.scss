@@ -1,8 +1,5 @@
 .card {
   box-shadow: $card-box-shadow;
-  .card-header {
-    padding: $card-header-padding;
-  }
 
   .card-body {
     font-family: $font-family-sans-serif;
@@ -15,7 +12,6 @@
   }
 
   .card-footer {
-    padding: $card-footer-padding;
     background-color: transparent;
   }
 }
